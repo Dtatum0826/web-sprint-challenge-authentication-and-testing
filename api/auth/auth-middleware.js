@@ -32,22 +32,36 @@ const user = await User.findBy({username:req.body.username})
 }
 }
 
-function checkLoginCredentials(req,res,next){
-  console.log(req.body)
-  const {username, password} = req.body
-  if(username.trim() === '' || password.trim() === ""){
-    next({status:422,message:"username and password required"})
-  } else{
-    next()
-  }
-}
+// function checkLoginCredentials(req,res,next){
+//   console.log(req.body)
+//   const {username, password} = req.body
+//   if(username.trim() === '' || password.trim() === ""){
+//     next({status:422,message:"username and password required"})
+//   } else{
+//     next()
+//   }
+// }
 
+function checkPayload (req,res,next){
+  const {username, password} = req.body
+  if(!username || typeof username !=='string' || username.trim().length === 0 ){
+    return res.status(400).json({message:"username and password required"})
+  }
+  if(!password || password.trim().length === 0){
+    return res.status(400).json({message:"username and password required"})
+  }
+  req.body.username = username.trim();
+  req.body.password = password.trim();
+
+  next()
+}
 
 
 module.exports ={ 
    
     checkUsernameFree,
     checkUsernameExists,
-    checkLoginCredentials
+    
+    checkPayload
    
   }

@@ -1,4 +1,4 @@
-const { checkUsernameExists, checkUsernameFree, checkLoginCredentials } = require('./auth-middleware');
+const { checkUsernameExists, checkUsernameFree, checkLoginCredentials, checkPayload } = require('./auth-middleware');
 const jwt =require('jsonwebtoken')
 const User = require('../users/users-model')
 const bcrypt = require('bcryptjs')
@@ -41,7 +41,7 @@ router.post('/register', checkUsernameFree,(req, res,next) => {
   */
 });
 
-router.post('/login', checkLoginCredentials,checkUsernameExists,(req, res, next) => {
+router.post('/login', checkPayload,checkUsernameExists,(req, res, next) => {
  
   let {username, password} = req.body
 
