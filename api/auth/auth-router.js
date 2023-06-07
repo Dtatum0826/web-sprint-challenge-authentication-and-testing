@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const router = require('express').Router();
 const {JWT_SECRET} = require('../secrets/index')
 
-router.post('/register', checkUsernameFree,(req, res,next) => {
+router.post('/register',checkPayload, checkUsernameFree,(req, res,next) => {
  const {username, password} = req.body
  console.log(password)
  const hash = bcrypt.hashSync(password,8)
